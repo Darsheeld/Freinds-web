@@ -71,7 +71,7 @@
     <div class="container">
         <div id="loginForm">
             <h2>Login</h2>
-            <form>
+            <form onsubmit="return handleSubmit('login')">
                 <input type="email" placeholder="Email" required>
                 <input type="password" placeholder="Password" required>
                 <button type="submit">Login</button>
@@ -82,20 +82,13 @@
         </div>
         <div id="signupForm" style="display: none;">
             <h2>Sign Up</h2>
-            <form>
+            <form onsubmit="return handleSubmit('signup')">
                 <input type="text" placeholder="Username" required>
                 <input type="email" placeholder="Email" required>
                 <input type="password" placeholder="Password" required>
                 <input type="password" placeholder="Confirm Password" required>
                 <button type="submit">Sign Up</button>
             </form>
-            <form id="loginForm" onsubmit="return handleSubmit('login')">
-  <!-- Login form fields -->
-</form>
-
-<form id="signupForm" onsubmit="return handleSubmit('signup')">
-  <!-- Signup form fields -->
-</form>
             <div class="switch">
                 <p>Already have an account? <a onclick="toggleForm()">Login</a></p>
             </div>
@@ -117,23 +110,18 @@
         }
 
         function handleSubmit(formType) {
-  // Perform form validation here if needed
-  
-  // Simulate form submission (replace this with your actual form submission logic)
-  console.log(formType + " form submitted");
-  
-  // Redirect to index.html or home page
-  window.location.href = "index.html";
-  
-  // Prevent the form from submitting normally
-  return false;
-}
-
-function toggleForm() {
-  // Existing toggle function code
-}
+            // Perform form validation here if needed
+            
+            // Simulate form submission (replace this with your actual form submission logic)
+            console.log(formType + " form submitted");
+            
+            // Redirect to index.html or home page
+            window.location.href = "index.html";
+            
+            // Prevent the form from submitting normally
+            return false;
+        }
     </script>
-</body>
     </div>
     
 
