@@ -1,32 +1,60 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
+    <title>Login and Sign Up</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="login-container">
-        <h2>Login</h2>
-        <form class="login-form">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit">Log In</button>
-        </form>
-        <p class="signup-link">Don't have an account? <a href="#">Sign up</a></p>
-    </div>
-</body>
-</html>
+    <div class="container">
+        <div class="form-container" id="login-form">
+            <h2>Login</h2>
+            <form>
+                <div class="form-group">
+                    <label for="login-username">Username</label>
+                    <input type="text" id="login-username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" name="password" required>
+                </div>
+                <button type="submit">Log In</button>
+            </form>
+            <p class="switch-form">Don't have an account? <a href="#" onclick="switchForm('signup-form')">Sign up</a></p>
+        </div>
+
+        <div class="form-container" id="signup-form" style="display: none;">
+            <h2>Sign Up</h2>
+            <form>
+                <div class="form-group">
+                    <label for="signup-username">Username</label>
+                    <input type="text" id="signup-username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-email">Email</label>
+                    <input type="email" id="signup-email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">Password</label>
+                    <input type="password" id="signup-password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-confirm-password">Confirm Password</label>
+                    <input type="password" id="signup-confirm-password" name="confirm-password" required>
+                </div>
+                <button type="submit">Sign Up</button>
+            </form>
+            <p class="switch-form">Already have an account? <a href="#" onclick="switchForm('login-form')">Log in</a></p>
         </div>
     </div>
-    
 
+    <script>
+        function switchForm(formId) {
+            document.getElementById('login-form').style.display = formId === 'login-form' ? 'block' : 'none';
+            document.getElementById('signup-form').style.display = formId === 'signup-form' ? 'block' : 'none';
+        }
+    </script>
 </body>
 </html>
