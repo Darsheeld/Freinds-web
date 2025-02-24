@@ -11,6 +11,20 @@
         <div class="navbar">
             <h2 class="logo">:D FREINDS-web</h2>
         </div>
+        <h1 id="welcomeMessage"></h1>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const username = localStorage.getItem('currentUser');
+            const welcomeMessage = document.getElementById('welcomeMessage');
+            
+            if (username) {
+                welcomeMessage.textContent = `Welcome, ${username}!`;
+            } else {
+                welcomeMessage.textContent = "Welcome!";
+            }
+        });
+    </script>
         <div class="menu">
             <ul>
                 <li><a href="index.html">HOME</a></li>
