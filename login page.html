@@ -4,14 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login/Signup Form</title>
-</head>
-<body>
-    <div class="main">
-        <div class="navbar">
-            <h2 class="logo">:D FREINDS-web</h2>
-        </div>
-        
     <style>
+        /* Your existing CSS styles here */
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -65,33 +59,40 @@
         .switch a:hover {
             text-decoration: underline;
         }
+        .message {
+            text-align: center;
+            color: #ff0000;
+            margin-top: 1rem;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div id="loginForm">
             <h2>Login</h2>
-            <form onsubmit="return handleSubmit('login')">
-                <input type="email" placeholder="Email" required>
-                <input type="password" placeholder="Password" required>
+            <form onsubmit="return handleLogin(event)">
+                <input type="email" id="loginEmail" placeholder="Email" required>
+                <input type="password" id="loginPassword" placeholder="Password" required>
                 <button type="submit">Login</button>
             </form>
             <div class="switch">
                 <p>Don't have an account? <a onclick="toggleForm()">Sign up</a></p>
             </div>
+            <div id="loginMessage" class="message"></div>
         </div>
         <div id="signupForm" style="display: none;">
             <h2>Sign Up</h2>
-            <form onsubmit="return handleSubmit('signup')">
-                <input type="text" placeholder="Username" required>
-                <input type="email" placeholder="Email" required>
-                <input type="password" placeholder="Password" required>
-                <input type="password" placeholder="Confirm Password" required>
+            <form onsubmit="return handleSignup(event)">
+                <input type="text" id="signupUsername" placeholder="Username" required>
+                <input type="email" id="signupEmail" placeholder="Email" required>
+                <input type="password" id="signupPassword" placeholder="Password" required>
+                <input type="password" id="signupConfirmPassword" placeholder="Confirm Password" required>
                 <button type="submit">Sign Up</button>
             </form>
             <div class="switch">
                 <p>Already have an account? <a onclick="toggleForm()">Login</a></p>
             </div>
+            <div id="signupMessage" class="message"></div>
         </div>
     </div>
 
@@ -109,21 +110,47 @@
             }
         }
 
-        function handleSubmit(formType) {
-            // Perform form validation here if needed
-            
-            // Simulate form submission (replace this with your actual form submission logic)
-            console.log(formType + " form submitted");
-            
-            // Redirect to index.html or home page
-            window.location.href = "index.html";
-            
-            // Prevent the form from submitting normally
+        function handleSignup(event) {
+            event.preventDefault();
+            const username = document.getElementById('signupUsername').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+            const messageElement = document.getElementById('signupMessage');
+
+            if (password !== confirmPassword) {
+                messageElement.textContent = "Passwords do not match";
+                return false;
+            }
+
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            if (users.some(user => user.email === email)) {
+                messageElement.textContent = "Email already exists";
+                return false;
+            }
+
+            users.push({ username, email, password });
+            localStorage.setItem('users', JSON.stringify(users));
+            messageElement.textContent = "Signup successful! You can now log in.";
+            return false;
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const messageElement = document.getElementById('loginMessage');
+
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.email === email && u.password === password);
+
+            if (user) {
+                window.location.href = "index.html";
+            } else {
+                messageElement.textContent = "Invalid email or password";
+            }
             return false;
         }
     </script>
-    </div>
-    
-
 </body>
 </html>
