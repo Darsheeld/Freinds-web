@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login/Signup Form</title>
     <style>
-        /* Your existing CSS styles here */
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -145,6 +144,7 @@
             const user = users.find(u => u.email === email && u.password === password);
 
             if (user) {
+                localStorage.setItem('currentUser', user.username);
                 window.location.href = "index.html";
             } else {
                 messageElement.textContent = "Invalid email or password";
