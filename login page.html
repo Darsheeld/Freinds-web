@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login/Signup Form with Cross-Device Authentication</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -74,6 +75,11 @@
             text-align: center;
             margin-top: 1rem;
         }
+        #qrcode {
+            background-color: white;
+            padding: 10px;
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
@@ -86,7 +92,10 @@
                 <button type="submit">Login</button>
             </form>
             <button onclick="initiateQRCodeLogin()">Login with another device</button>
-            <div id="qrCodeContainer" style="display: none;"></div>
+            <div id="qrCodeContainer" style="display: none;">
+                <div id="qrcode"></div>
+                <p style="color: white;">Scan this code with your other device</p>
+            </div>
             <div class="switch">
                 <p>Don't have an account? <a onclick="toggleForm()">Sign up</a></p>
             </div>
@@ -166,15 +175,25 @@
             return false;
         }
 
+        let qrcode;
+
         function initiateQRCodeLogin() {
             const sessionId = Math.random().toString(36).substring(2, 15);
+            const authUrl = `https://yourserver.com/auth?session=${sessionId}`;
             
-            // Simulate QR code generation (replace with actual QR code library in production)
-            const qrCode = `<div style="background-color: white; padding: 10px; display: inline-block;">
-                                <p style="color: black;">Scan this code: ${sessionId}</p>
-                            </div>`;
+            if (!qrcode) {
+                qrcode = new QRCode(document.getElementById("qrcode"), {
+                    text: authUrl,
+                    width: 128,
+                    height: 128,
+                    colorDark : "#000000",
+                    colorLight : "#ffffff",
+                    correctLevel : QRCode.CorrectLevel.H
+                });
+            } else {
+                qrcode.makeCode(authUrl);
+            }
             
-            document.getElementById('qrCodeContainer').innerHTML = qrCode;
             document.getElementById('qrCodeContainer').style.display = 'block';
             
             pollAuthStatus(sessionId);
@@ -196,5 +215,6 @@
     </script>
 </body>
 </html>
+
 
 
