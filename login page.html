@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login/Signup Form</title>
+    <title>Login/Signup Form with Cross-Device Authentication</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -47,6 +47,7 @@
             padding: 0.5rem;
             border-radius: 3px;
             cursor: pointer;
+            margin-bottom: 0.5rem;
         }
         button:hover {
             background-color: #0056b3;
@@ -69,6 +70,10 @@
             color: #ff0000;
             margin-top: 1rem;
         }
+        #qrCodeContainer {
+            text-align: center;
+            margin-top: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -76,10 +81,12 @@
         <div id="loginForm">
             <h2>Login</h2>
             <form onsubmit="return handleLogin(event)">
-                <input type="email" id="loginEmail" placeholder="Email" required>
+                <input type="text" id="loginUsername" placeholder="Username" required>
                 <input type="password" id="loginPassword" placeholder="Password" required>
                 <button type="submit">Login</button>
             </form>
+            <button onclick="initiateQRCodeLogin()">Login with another device</button>
+            <div id="qrCodeContainer" style="display: none;"></div>
             <div class="switch">
                 <p>Don't have an account? <a onclick="toggleForm()">Sign up</a></p>
             </div>
@@ -89,7 +96,6 @@
             <h2>Sign Up</h2>
             <form onsubmit="return handleSignup(event)">
                 <input type="text" id="signupUsername" placeholder="Username" required>
-                <input type="email" id="signupEmail" placeholder="Email" required>
                 <input type="password" id="signupPassword" placeholder="Password" required>
                 <input type="password" id="signupConfirmPassword" placeholder="Confirm Password" required>
                 <button type="submit">Sign Up</button>
@@ -118,7 +124,6 @@
         function handleSignup(event) {
             event.preventDefault();
             const username = document.getElementById('signupUsername').value;
-            const email = document.getElementById('signupEmail').value;
             const password = document.getElementById('signupPassword').value;
             const confirmPassword = document.getElementById('signupConfirmPassword').value;
             const messageElement = document.getElementById('signupMessage');
@@ -129,15 +134,14 @@
             }
 
             const users = JSON.parse(localStorage.getItem('users') || '[]');
-            if (users.some(user => user.email === email)) {
-                messageElement.textContent = "Email already exists";
+            if (users.some(user => user.username === username)) {
+                messageElement.textContent = "Username already exists";
                 return false;
             }
 
-            users.push({ username, email, password });
+            users.push({ username, password });
             localStorage.setItem('users', JSON.stringify(users));
             
-            // Automatically log in the user after successful signup
             localStorage.setItem('currentUser', username);
             window.location.href = "index.html";
             
@@ -146,22 +150,51 @@
 
         function handleLogin(event) {
             event.preventDefault();
-            const email = document.getElementById('loginEmail').value;
+            const username = document.getElementById('loginUsername').value;
             const password = document.getElementById('loginPassword').value;
             const messageElement = document.getElementById('loginMessage');
 
             const users = JSON.parse(localStorage.getItem('users') || '[]');
-            const user = users.find(u => u.email === email && u.password === password);
+            const user = users.find(u => u.username === username && u.password === password);
 
             if (user) {
                 localStorage.setItem('currentUser', user.username);
                 window.location.href = "index.html";
             } else {
-                messageElement.textContent = "Invalid email or password";
+                messageElement.textContent = "Invalid username or password";
             }
             return false;
+        }
+
+        function initiateQRCodeLogin() {
+            const sessionId = Math.random().toString(36).substring(2, 15);
+            
+            // Simulate QR code generation (replace with actual QR code library in production)
+            const qrCode = `<div style="background-color: white; padding: 10px; display: inline-block;">
+                                <p style="color: black;">Scan this code: ${sessionId}</p>
+                            </div>`;
+            
+            document.getElementById('qrCodeContainer').innerHTML = qrCode;
+            document.getElementById('qrCodeContainer').style.display = 'block';
+            
+            pollAuthStatus(sessionId);
+        }
+
+        function pollAuthStatus(sessionId) {
+            setTimeout(() => {
+                // Simulate authentication (replace with actual server communication in production)
+                const authenticated = Math.random() < 0.5; // 50% success rate for demonstration
+                
+                if (authenticated) {
+                    localStorage.setItem('currentUser', 'CrossDeviceUser');
+                    window.location.href = "index.html";
+                } else {
+                    pollAuthStatus(sessionId); // Continue polling
+                }
+            }, 5000); // Poll every 5 seconds
         }
     </script>
 </body>
 </html>
+
 
