@@ -12,10 +12,10 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f0f0f0;
+            background-color: #333;
         }
         .container {
-            background-color: white;
+            background-color: #444;
             padding: 2rem;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -23,7 +23,7 @@
         }
         h2 {
             text-align: center;
-            color: #333;
+            color: white;
         }
         form {
             display: flex;
@@ -34,6 +34,11 @@
             padding: 0.5rem;
             border: 1px solid #ccc;
             border-radius: 3px;
+            color: white;
+            background-color: #555;
+        }
+        input::placeholder {
+            color: #ccc;
         }
         button {
             background-color: #007bff;
@@ -49,9 +54,10 @@
         .switch {
             text-align: center;
             margin-top: 1rem;
+            color: white;
         }
         .switch a {
-            color: #007bff;
+            color: #ccc;
             text-decoration: none;
             cursor: pointer;
         }
@@ -130,7 +136,11 @@
 
             users.push({ username, email, password });
             localStorage.setItem('users', JSON.stringify(users));
-            messageElement.textContent = "Signup successful! You can now log in.";
+            
+            // Automatically log in the user after successful signup
+            localStorage.setItem('currentUser', username);
+            window.location.href = "index.html";
+            
             return false;
         }
 
@@ -154,3 +164,4 @@
     </script>
 </body>
 </html>
+
